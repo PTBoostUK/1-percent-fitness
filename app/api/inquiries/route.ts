@@ -39,11 +39,17 @@ export async function POST(request: Request) {
 
     // Send email notification to admin via EmailJS
     try {
-      const emailjsServiceId = process.env.EMAILJS_SERVICE_ID
-      const emailjsPublicKey = process.env.EMAILJS_PUBLIC_KEY
-      const emailjsTemplateId = process.env.EMAILJS_TEMPLATE_ID || 'template_509vifb'
+      const emailjsServiceId = process.env.EMAILJS_SERVICE_ID || process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+      const emailjsPrivateKey = process.env.EMAILJS_PRIVATE_KEY
+      const emailjsPublicKey = process.env.EMAILJS_PUBLIC_KEY || process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      const emailjsTemplateId = process.env.EMAILJS_TEMPLATE_ID || process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'one_percent_fitness'
 
-      if (emailjsServiceId && emailjsPublicKey) {
+      if (emailjsServiceId && (emailjsPrivateKey || emailjsPublicKey)) {
+        // Build auth options: use private key for server-side, include public key if available
+        const authOptions: any = emailjsPrivateKey
+          ? { privateKey: emailjsPrivateKey, ...(emailjsPublicKey && { publicKey: emailjsPublicKey }) }
+          : { publicKey: emailjsPublicKey }
+
         await emailjs.send(
           emailjsServiceId,
           emailjsTemplateId,
@@ -54,16 +60,12 @@ export async function POST(request: Request) {
             message: message || 'No message provided',
             goal: goal || 'Not specified',
           },
-          {
-            publicKey: emailjsPublicKey,
-          }
+          authOptions
         )
-      } else {
-        console.warn('EmailJS credentials not configured. Skipping email notification.')
       }
-    } catch (emailError) {
+    } catch (emailError: any) {
       // Log email error but don't fail the request
-      console.error('Error sending email notification:', emailError)
+      console.error('Error sending email notification:', emailError?.message || emailError)
     }
 
     return NextResponse.json({ success: true, data })
