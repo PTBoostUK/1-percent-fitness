@@ -1,54 +1,72 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Quote, Star } from "lucide-react"
+import type { TestimonialsContent } from "@/lib/types/database"
 
-const testimonials = [
-  {
-    name: "Marcus R.",
-    result: "Lost 15kg in 4 months",
-    quote:
-      "1% Fitness coaching completely changed my approach to fitness. The accountability and personalized programs made all the difference. I'm stronger and more confident than ever.",
-    rating: 5,
-  },
-  {
-    name: "David L.",
-    result: "Gained 8kg of muscle",
-    quote:
-      "I've tried other trainers before, but 1% Fitness's method actually works. The combination of training and nutrition guidance helped me finally break through my plateau and build real muscle.",
-    rating: 5,
-  },
-  {
-    name: "Tom S.",
-    result: "Transformed in 6 months",
-    quote:
-      "Working with 1% Fitness has been life-changing. Not only did I transform my body, but I developed discipline and habits that carry over into every area of my life.",
-    rating: 5,
-  },
-]
+interface TestimonialsSectionProps {
+  content?: TestimonialsContent | null
+}
 
-export function TestimonialsSection() {
+export function TestimonialsSection({ content }: TestimonialsSectionProps) {
+  const badge = content?.badge || "Testimonials"
+  const title = content?.title || "Client Results"
+  const subtitle = content?.subtitle || "Real transformations from real people"
+  const testimonials = content?.testimonials || [
+    {
+      id: "1",
+      name: "Marcus R.",
+      result: "Lost 15kg in 4 months",
+      quote: "1% Fitness coaching completely changed my approach to fitness. The accountability and personalized programs made all the difference. I'm stronger and more confident than ever.",
+      rating: 5,
+      order: 0,
+    },
+    {
+      id: "2",
+      name: "David L.",
+      result: "Gained 8kg of muscle",
+      quote: "I've tried other trainers before, but 1% Fitness's method actually works. The combination of training and nutrition guidance helped me finally break through my plateau and build real muscle.",
+      rating: 5,
+      order: 1,
+    },
+    {
+      id: "3",
+      name: "Tom S.",
+      result: "Transformed in 6 months",
+      quote: "Working with 1% Fitness has been life-changing. Not only did I transform my body, but I developed discipline and habits that carry over into every area of my life.",
+      rating: 5,
+      order: 2,
+    },
+  ]
   return (
     <section className="py-32 px-6 bg-gradient-to-b from-black via-zinc-950 to-black relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.05)_0%,transparent_50%)]" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-16 space-y-4">
-          <p className="text-primary font-semibold tracking-wider uppercase text-sm">Testimonials</p>
+          <p className="text-primary font-semibold tracking-wider uppercase text-sm">{badge}</p>
           <h2 className="text-5xl md:text-6xl font-bold text-white tracking-tight">
-            Client <span className="text-gradient">Results</span>
+            {title.split(' ').map((word, i, arr) => (
+              <span key={i}>
+                {i === arr.length - 1 ? (
+                  <span className="text-gradient">{word}</span>
+                ) : (
+                  word + ' '
+                )}
+              </span>
+            ))}
           </h2>
-          <p className="text-zinc-400 text-lg max-w-2xl mx-auto text-pretty">Real transformations from real people</p>
+          <p className="text-zinc-400 text-lg max-w-2xl mx-auto text-pretty">{subtitle}</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <Card
-              key={testimonial.name}
+              key={testimonial.id || index}
               className="bg-gradient-to-b from-zinc-900 to-zinc-950 border-zinc-800 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl hover:shadow-primary/20"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <CardContent className="pt-8 space-y-6">
                 <div className="flex gap-1">
-                  {[...Array(testimonial.rating)].map((_, i) => (
+                  {[...Array(testimonial.rating || 5)].map((_, i) => (
                     <Star key={i} className="w-5 h-5 fill-primary text-primary" />
                   ))}
                 </div>

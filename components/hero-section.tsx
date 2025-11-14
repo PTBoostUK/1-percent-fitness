@@ -2,14 +2,29 @@
 
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Play } from "lucide-react"
+import type { HeroContent } from "@/lib/types/database"
 
-export function HeroSection() {
+interface HeroSectionProps {
+  content?: HeroContent | null
+}
+
+export function HeroSection({ content }: HeroSectionProps) {
+  // Default content if not provided
+  const tagline = content?.tagline || "Certified Personal Trainer"
+  const title = content?.title || "Transform Your Body.\nElevate Your\nMind."
+  const subtitle = content?.subtitle || "Build strength, confidence, and discipline with personalized training designed for men who are ready to level up."
+  const buttonText = content?.buttonText || "Book Your Free Consultation"
+  const backgroundImage = content?.backgroundImage || "/athletic-male-personal-trainer-working-out-in-mode.jpg"
+  const stats = content?.stats || { clients: "50+", years: "5+", committed: "100%" }
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-black" />
 
       {/* Background image on right side */}
-      <div className="absolute inset-y-0 right-0 w-full lg:w-[55%] bg-[url('/athletic-male-personal-trainer-working-out-in-mode.jpg')] bg-cover bg-center">
+      <div 
+        className="absolute inset-y-0 right-0 w-full lg:w-[55%] bg-cover bg-center"
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
       </div>
 
@@ -26,21 +41,21 @@ export function HeroSection() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-sm font-medium text-primary">Certified Personal Trainer</span>
+              <span className="text-sm font-medium text-primary">{tagline}</span>
             </div>
 
             {/* Main headline */}
             <div className="space-y-6">
               <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.95] tracking-tight">
-                <span className="block text-balance">Transform</span>
-                <span className="block text-balance">Your Body.</span>
-                <span className="block text-gradient mt-2">Elevate Your</span>
-                <span className="block text-gradient">Mind.</span>
+                {title.split('\n').map((line, i) => (
+                  <span key={i} className={`block text-balance ${i >= 2 ? 'text-gradient' : ''} ${i === 2 ? 'mt-2' : ''}`}>
+                    {line}
+                  </span>
+                ))}
               </h1>
 
               <p className="text-lg md:text-xl lg:text-2xl text-zinc-400 max-w-lg leading-relaxed text-pretty">
-                Build strength, confidence, and discipline with personalized training designed for men who are ready to
-                level up.
+                {subtitle}
               </p>
             </div>
 
@@ -51,7 +66,7 @@ export function HeroSection() {
                 className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-7 text-lg rounded-xl shadow-2xl shadow-primary/30 hover:shadow-primary/50 transition-all duration-300 hover:scale-105 group"
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
               >
-                Book Your Free Consultation
+                {buttonText}
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
 
@@ -69,15 +84,15 @@ export function HeroSection() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 pt-8">
               <div className="space-y-1">
-                <div className="text-4xl font-bold text-white">50+</div>
+                <div className="text-4xl font-bold text-white">{stats.clients}</div>
                 <div className="text-sm text-zinc-500 uppercase tracking-wider">Clients</div>
               </div>
               <div className="space-y-1">
-                <div className="text-4xl font-bold text-white">5+</div>
+                <div className="text-4xl font-bold text-white">{stats.years}</div>
                 <div className="text-sm text-zinc-500 uppercase tracking-wider">Years</div>
               </div>
               <div className="space-y-1">
-                <div className="text-4xl font-bold text-white">100%</div>
+                <div className="text-4xl font-bold text-white">{stats.committed}</div>
                 <div className="text-sm text-zinc-500 uppercase tracking-wider">Committed</div>
               </div>
             </div>
