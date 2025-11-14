@@ -7,9 +7,9 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Jake Turner Fitness | Personal Training for Men",
+  title: "1% Fitness | Personal Training for Men",
   description:
-    "Transform your body and elevate your mind with personalized training from certified PT Jake Turner. 1-on-1 coaching, online training, and custom meal plans.",
+    "Transform your body and elevate your mind with personalized training from 1% Fitness. 1-on-1 coaching, online training, and custom meal plans.",
   generator: "v0.app",
 }
 

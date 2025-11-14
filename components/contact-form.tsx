@@ -20,7 +20,7 @@ export function ContactForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log("Form submitted:", formData)
-    alert("Thanks for reaching out! Jake will get back to you within 24 hours.")
+    alert("Thanks for reaching out! We'll get back to you within 24 hours.")
     setFormData({ name: "", email: "", goal: "", message: "" })
   }
 

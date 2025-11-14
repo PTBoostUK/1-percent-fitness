@@ -6,7 +6,7 @@ export function Footer() {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="text-center md:text-left">
-            <h3 className="text-2xl font-bold text-white mb-2">Jake Turner Fitness</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">1% Fitness</h3>
             <p className="text-gray-400">Transform Your Body. Elevate Your Mind.</p>
           </div>
           <div className="flex flex-col items-center md:items-end gap-4">
@@ -40,16 +40,16 @@ export function Footer() {
               </a>
             </div>
             <a
-              href="mailto:jake@turnerfitness.com"
+              href="mailto:info@1percentfitness.com"
               className="flex items-center gap-2 text-gray-400 hover:text-blue-500 transition-colors"
             >
               <Mail className="w-4 h-4" />
-              jake@turnerfitness.com
+              info@1percentfitness.com
             </a>
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-zinc-900 text-center text-gray-500 text-sm">
-          © {new Date().getFullYear()} Jake Turner Fitness. All rights reserved.
+          © {new Date().getFullYear()} 1% Fitness. All rights reserved.
         </div>
       </div>
     </footer>

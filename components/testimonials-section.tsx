@@ -6,21 +6,21 @@ const testimonials = [
     name: "Marcus R.",
     result: "Lost 15kg in 4 months",
     quote:
-      "Jake's coaching completely changed my approach to fitness. The accountability and personalized programs made all the difference. I'm stronger and more confident than ever.",
+      "1% Fitness coaching completely changed my approach to fitness. The accountability and personalized programs made all the difference. I'm stronger and more confident than ever.",
     rating: 5,
   },
   {
     name: "David L.",
     result: "Gained 8kg of muscle",
     quote:
-      "I've tried other trainers before, but Jake's method actually works. The combination of training and nutrition guidance helped me finally break through my plateau and build real muscle.",
+      "I've tried other trainers before, but 1% Fitness's method actually works. The combination of training and nutrition guidance helped me finally break through my plateau and build real muscle.",
     rating: 5,
   },
   {
     name: "Tom S.",
     result: "Transformed in 6 months",
     quote:
-      "Working with Jake has been life-changing. Not only did I transform my body, but I developed discipline and habits that carry over into every area of my life.",
+      "Working with 1% Fitness has been life-changing. Not only did I transform my body, but I developed discipline and habits that carry over into every area of my life.",
     rating: 5,
   },
 ]

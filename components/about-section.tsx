@@ -17,7 +17,7 @@ export function AboutSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
               <img
                 src="/professional-male-personal-trainer-portrait-athlet.jpg"
-                alt="Liam Hogan"
+                alt="1% Fitness Trainer"
                 className="w-full h-full object-cover"
               />
 
@@ -48,7 +48,7 @@ export function AboutSection() {
               </div>
 
               <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1]">
-                Meet <span className="text-gradient inline-block">Liam Hogan</span>
+                Welcome to <span className="text-gradient inline-block">1% Fitness</span>
               </h2>
 
               <p className="text-xl text-zinc-400 leading-relaxed max-w-xl">
@@ -59,12 +59,12 @@ export function AboutSection() {
 
             <div className="space-y-4 text-lg text-zinc-300 leading-relaxed">
               <p className="text-pretty">
-                At 27, I've dedicated my career to transforming lives through evidence-based training and personalized
-                coaching. I don't just help you build muscle—I help you build the mindset and habits that create lasting
+                We've dedicated our mission to transforming lives through evidence-based training and personalized
+                coaching. We don't just help you build muscle—we help you build the mindset and habits that create lasting
                 change.
               </p>
               <p className="text-pretty">
-                Whether you're starting your fitness journey or pushing past a plateau, I'll be with you every step of
+                Whether you're starting your fitness journey or pushing past a plateau, we'll be with you every step of
                 the way, providing the accountability, expertise, and support you need to succeed.
               </p>
             </div>
