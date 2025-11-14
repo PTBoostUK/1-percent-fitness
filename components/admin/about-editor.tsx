@@ -57,11 +57,18 @@ export function AboutEditor({ content, onSave }: AboutEditorProps) {
     image: content.image || DEFAULT_ABOUT.image,
   })
 
-  const handleSave = () => {
-    onSave({
-      id: content.id,
-      ...formData,
-    })
+  const [isSaving, setIsSaving] = useState(false)
+
+  const handleSave = async () => {
+    setIsSaving(true)
+    try {
+      await onSave({
+        id: content.id,
+        ...formData,
+      })
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const handleRevert = () => {
@@ -134,23 +141,24 @@ export function AboutEditor({ content, onSave }: AboutEditorProps) {
         fieldLabel={aiEditor.label}
         onApply={handleAIApply}
       />
-      <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 animate-slide-down">
         <div>
-          <h2 className="text-2xl font-bold text-white">About Section</h2>
-          <p className="text-zinc-400 text-sm mt-1">Edit the about section content</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-white">About Section</h2>
+          <p className="text-zinc-400 text-xs sm:text-sm mt-1">Edit the about section content</p>
         </div>
         <Button
           variant="outline"
-          className="border-zinc-700 text-white hover:bg-zinc-800"
+          size="sm"
+          className="border-zinc-700 text-white hover:bg-zinc-800 transition-smooth btn-press hover:scale-105 active:scale-95 w-full sm:w-auto"
           onClick={handleRevert}
         >
-          <RotateCcw className="w-4 h-4 mr-2" />
+          <RotateCcw className="w-4 h-4 mr-2 transition-transform hover:rotate-180" />
           Revert to Default
         </Button>
       </div>
 
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-6">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 sm:p-6 space-y-6 card-hover animate-scale-in">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="badge" className="text-white">
@@ -159,10 +167,10 @@ export function AboutEditor({ content, onSave }: AboutEditorProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="text-primary hover:text-primary/80"
+              className="text-primary hover:text-primary/80 transition-smooth btn-press hover:scale-110 active:scale-95"
               onClick={() => openAIEditor("badge", "Badge")}
             >
-              <Sparkles className="w-4 h-4 mr-1" />
+              <Sparkles className="w-4 h-4 mr-1 transition-transform hover:rotate-12" />
               AI
             </Button>
           </div>
@@ -170,7 +178,7 @@ export function AboutEditor({ content, onSave }: AboutEditorProps) {
             id="badge"
             value={formData.badge}
             onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
-            className="bg-zinc-950 border-zinc-800 text-white"
+            className="bg-zinc-950 border-zinc-800 text-white input-focus transition-smooth"
           />
         </div>
 
@@ -216,7 +224,7 @@ export function AboutEditor({ content, onSave }: AboutEditorProps) {
             id="description"
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="bg-zinc-950 border-zinc-800 text-white min-h-24"
+            className="bg-zinc-950 border-zinc-800 text-white min-h-24 input-focus transition-smooth"
           />
         </div>
 
@@ -269,7 +277,7 @@ export function AboutEditor({ content, onSave }: AboutEditorProps) {
         <div className="space-y-4 pt-4 border-t border-zinc-800">
           <Label className="text-white">Features</Label>
           {formData.features.map((feature, index) => (
-            <div key={index} className="space-y-2 p-4 bg-zinc-950 rounded-lg">
+            <div key={index} className="space-y-2 p-4 bg-zinc-950 rounded-lg card-hover animate-slide-up stagger-children">
               <Input
                 placeholder="Feature title"
                 value={feature.title}
@@ -376,39 +384,87 @@ export function AboutEditor({ content, onSave }: AboutEditorProps) {
             About Image
           </Label>
           <div className="flex items-center gap-4">
-            <Input
-              id="image"
-              type="text"
-              value={formData.image}
-              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-              placeholder="/path/to/image.jpg"
-              className="bg-zinc-950 border-zinc-800 text-white"
-            />
-            <label className="cursor-pointer">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
-              <Button
-                type="button"
-                variant="outline"
-                className="border-zinc-700 text-white hover:bg-zinc-800"
-              >
-                <Upload className="w-4 h-4 mr-2" />
-                Upload
-              </Button>
-            </label>
+            {formData.image && (formData.image.startsWith('data:') || formData.image.startsWith('http') || formData.image.startsWith('/')) ? (
+              <div className="flex items-center gap-4 w-full">
+                <div className="relative w-24 h-24 rounded-lg overflow-hidden border border-zinc-700 flex-shrink-0">
+                  <img
+                    src={formData.image}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none'
+                    }}
+                  />
+                </div>
+                <div className="flex gap-2 flex-1">
+                  <Input
+                    id="image"
+                    type="text"
+                    value={formData.image}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    placeholder="/path/to/image.jpg"
+                    className="bg-zinc-950 border-zinc-800 text-white flex-1"
+                  />
+                  <label htmlFor="image-upload" className="cursor-pointer">
+                    <input
+                      id="image-upload"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="border-zinc-700 text-white hover:bg-zinc-800"
+                      onClick={() => document.getElementById('image-upload')?.click()}
+                    >
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload
+                    </Button>
+                  </label>
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-2 w-full">
+                <Input
+                  id="image"
+                  type="text"
+                  value={formData.image}
+                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                  placeholder="/path/to/image.jpg"
+                  className="bg-zinc-950 border-zinc-800 text-white flex-1"
+                />
+                <label htmlFor="image-upload" className="cursor-pointer">
+                  <input
+                    id="image-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="border-zinc-700 text-white hover:bg-zinc-800"
+                    onClick={() => document.getElementById('image-upload')?.click()}
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload
+                  </Button>
+                </label>
+              </div>
+            )}
           </div>
         </div>
 
         <Button
           onClick={handleSave}
-          className="w-full bg-primary hover:bg-primary/90 text-white"
+          disabled={isSaving}
+          className="w-full bg-primary hover:bg-primary/90 text-white transition-smooth btn-press hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
-          <Save className="w-4 h-4 mr-2" />
-          Save Changes
+          <Save className={`w-4 h-4 mr-2 transition-transform ${isSaving ? 'animate-spin' : ''}`} />
+          {isSaving ? "Saving..." : "Save Changes"}
         </Button>
       </div>
       </div>

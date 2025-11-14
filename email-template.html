@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Inquiry Notification</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #0a0a0a;">
+    <!-- Wrapper Table -->
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #0a0a0a;">
+        <tr>
+            <td align="center" style="padding: 40px 20px;">
+                <!-- Main Container -->
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="max-width: 600px; background-color: #18181b; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
+                    
+                    <!-- Header with Gradient -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); padding: 40px 30px; text-align: center;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;">
+                                New Inquiry Received
+                            </h1>
+                            <p style="margin: 10px 0 0 0; color: rgba(255, 255, 255, 0.9); font-size: 14px; font-weight: 500;">
+                                Someone is ready to transform their fitness journey
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Main Content -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <!-- Greeting -->
+                            <p style="margin: 0 0 24px 0; color: #f4f4f5; font-size: 16px; line-height: 1.6;">
+                                Hi there,
+                            </p>
+                            
+                            <p style="margin: 0 0 24px 0; color: #a1a1aa; font-size: 16px; line-height: 1.6;">
+                                You've received a new inquiry from your website. Here are the details:
+                            </p>
+
+                            <!-- Info Card -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #27272a; border-radius: 12px; border: 1px solid #3f3f46; margin: 24px 0;">
+                                <tr>
+                                    <td style="padding: 24px;">
+                                        <!-- Name -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding-bottom: 16px; border-bottom: 1px solid #3f3f46;">
+                                                    <p style="margin: 0 0 6px 0; color: #71717a; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                        Name
+                                                    </p>
+                                                    <p style="margin: 0; color: #f4f4f5; font-size: 18px; font-weight: 600;">
+                                                        {{name}}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- Email -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding: 16px 0; border-bottom: 1px solid #3f3f46;">
+                                                    <p style="margin: 0 0 6px 0; color: #71717a; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                        Email Address
+                                                    </p>
+                                                    <p style="margin: 0; color: #a1a1aa; font-size: 16px;">
+                                                        <a href="mailto:{{email}}" style="color: #818cf8; text-decoration: none; font-weight: 500;">{{email}}</a>
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- Goal -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding: 16px 0; border-bottom: 1px solid #3f3f46;">
+                                                    <p style="margin: 0 0 6px 0; color: #71717a; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                        Fitness Goal
+                                                    </p>
+                                                    <p style="margin: 0; color: #f4f4f5; font-size: 16px; font-weight: 500;">
+                                                        {{goal}}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <!-- Message -->
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="padding-top: 16px;">
+                                                    <p style="margin: 0 0 6px 0; color: #71717a; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                                                        Message
+                                                    </p>
+                                                    <p style="margin: 0; color: #a1a1aa; font-size: 16px; line-height: 1.6; white-space: pre-wrap;">
+                                                        {{message}}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Call to Action -->
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tr>
+                                    <td align="center" style="padding: 24px 0;">
+                                        <a href="mailto:{{email}}?subject=Re: {{title}}" style="display: inline-block; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #ffffff; text-decoration: none; padding: 14px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.4);">
+                                            Reply to {{name}}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Footer Note -->
+                            <p style="margin: 24px 0 0 0; color: #71717a; font-size: 14px; line-height: 1.6; text-align: center;">
+                                This inquiry was submitted through your website contact form.<br>
+                                Please respond within 24 hours for the best client experience.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #09090b; padding: 24px 30px; text-align: center; border-top: 1px solid #27272a;">
+                            <p style="margin: 0; color: #52525b; font-size: 12px; line-height: 1.5;">
+                                © {{year}} Your Fitness Brand. All rights reserved.
+                            </p>
+                            <p style="margin: 8px 0 0 0; color: #3f3f46; font-size: 11px;">
+                                This is an automated notification email.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+

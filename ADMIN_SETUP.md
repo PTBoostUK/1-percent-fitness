@@ -6,7 +6,8 @@ This guide will help you set up the Supabase-powered admin dashboard for your we
 
 1. A Supabase account (sign up at [supabase.com](https://supabase.com))
 2. An OpenAI API key (for AI content editing - get one at [platform.openai.com](https://platform.openai.com))
-3. Node.js and pnpm installed
+3. An EmailJS account (for email notifications - sign up at [emailjs.com](https://www.emailjs.com))
+4. Node.js and pnpm installed
 
 ## Setup Steps
 
@@ -31,6 +32,9 @@ This guide will help you set up the Supabase-powered admin dashboard for your we
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 OPENAI_API_KEY=your_openai_api_key
+EMAILJS_SERVICE_ID=your_emailjs_service_id
+EMAILJS_PUBLIC_KEY=your_emailjs_public_key
+EMAILJS_TEMPLATE_ID=template_509vifb
 ```
 
 **To get your OpenAI API key:**
@@ -39,6 +43,20 @@ OPENAI_API_KEY=your_openai_api_key
 3. Go to "API Keys" in your account settings
 4. Click "Create new secret key"
 5. Copy the key and add it to your `.env.local` file
+
+**To get your EmailJS credentials:**
+1. Go to [emailjs.com](https://www.emailjs.com) and sign up or log in
+2. Create an email service (Gmail, Outlook, etc.) in the Email Services section
+3. Copy your Service ID from the service settings
+4. Go to Account > General and copy your Public Key
+5. Create or use an existing email template (the default template ID is `template_509vifb`)
+6. In your template, you can use these variables:
+   - `{{name}}` - The sender's name
+   - `{{email}}` - The sender's email
+   - `{{title}}` - The inquiry goal or message
+   - `{{message}}` - The full message
+   - `{{goal}}` - The fitness goal
+7. Add all credentials to your `.env.local` file
 
 **Important:** Never commit your `.env.local` file to version control. It contains sensitive keys.
 
@@ -91,6 +109,13 @@ pnpm dev
 - Upload images directly from the admin dashboard
 - Replace existing images in any section
 - Images are stored as base64 (for production, consider using Supabase Storage)
+
+### Email Notifications
+
+- Automatic email notifications sent to admin when someone submits the contact form
+- Configured via EmailJS with customizable templates
+- Email includes sender name, email, goal, and message
+- Notifications are sent asynchronously and won't block form submission
 
 ## Database Structure
 

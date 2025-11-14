@@ -84,6 +84,17 @@ CREATE TABLE IF NOT EXISTS theme_settings (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Inquiries Table
+CREATE TABLE IF NOT EXISTS inquiries (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  goal TEXT,
+  message TEXT,
+  read BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Add secondary_color column if it doesn't exist (for existing databases)
 DO $$ 
 BEGIN
@@ -173,6 +184,7 @@ ALTER TABLE services ENABLE ROW LEVEL SECURITY;
 ALTER TABLE testimonials_content ENABLE ROW LEVEL SECURITY;
 ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
 ALTER TABLE theme_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE inquiries ENABLE ROW LEVEL SECURITY;
 
 -- Create policies for public read access
 CREATE POLICY "Public read access" ON hero_content FOR SELECT USING (true);
@@ -182,6 +194,16 @@ CREATE POLICY "Public read access" ON services FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON testimonials_content FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON testimonials FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON theme_settings FOR SELECT USING (true);
+
+-- Create policies for inquiries
+-- Public can insert (submit inquiries)
+CREATE POLICY "Public insert access" ON inquiries FOR INSERT WITH CHECK (true);
+-- Only authenticated users can read inquiries
+CREATE POLICY "Authenticated read access" ON inquiries FOR SELECT USING (auth.role() = 'authenticated');
+-- Only authenticated users can update inquiries (mark as read)
+CREATE POLICY "Authenticated update access" ON inquiries FOR UPDATE USING (auth.role() = 'authenticated');
+-- Only authenticated users can delete inquiries
+CREATE POLICY "Authenticated delete access" ON inquiries FOR DELETE USING (auth.role() = 'authenticated');
 
 -- Create policies for authenticated write access (admin only)
 CREATE POLICY "Authenticated write access" ON hero_content FOR ALL USING (auth.role() = 'authenticated');

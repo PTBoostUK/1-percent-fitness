@@ -27,13 +27,15 @@ Guidelines:
 - Ensure the content is relevant to fitness and personal training
 - Do not add unnecessary words or fluff
 - Preserve the core message and intent
-- Make sure the edited content flows naturally`
+- Make sure the edited content flows naturally
+- Do NOT wrap the response in quotes or quotation marks
+- Return only the plain text content`
 
     const userPrompt = `Edit the following ${fieldLabel} content based on this instruction: "${instruction}"
 
 Current content: "${currentContent}"
 
-Please provide only the edited content without any explanations or additional text. Return only the revised version of the content.`
+Please provide only the edited content without any explanations, additional text, or quotation marks. Return only the revised version of the content as plain text.`
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -62,13 +64,21 @@ Please provide only the edited content without any explanations or additional te
     }
 
     const data = await response.json()
-    const generatedContent = data.choices?.[0]?.message?.content?.trim()
+    let generatedContent = data.choices?.[0]?.message?.content?.trim()
 
     if (!generatedContent) {
       return NextResponse.json(
         { error: 'No content generated' },
         { status: 500 }
       )
+    }
+
+    // Remove surrounding quotes if present
+    if (
+      (generatedContent.startsWith('"') && generatedContent.endsWith('"')) ||
+      (generatedContent.startsWith("'") && generatedContent.endsWith("'"))
+    ) {
+      generatedContent = generatedContent.slice(1, -1)
     }
 
     return NextResponse.json({ content: generatedContent })

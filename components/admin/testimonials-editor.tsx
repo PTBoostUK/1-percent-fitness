@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Save, Plus, X, RotateCcw, Sparkles } from "lucide-react"
+import { Save, RotateCcw, Sparkles } from "lucide-react"
 import { AIContentEditor } from "@/components/admin/ai-content-editor"
 import type { TestimonialsContent } from "@/lib/types/database"
 
@@ -54,11 +54,18 @@ export function TestimonialsEditor({ content, onSave }: TestimonialsEditorProps)
     testimonials: content.testimonials || DEFAULT_TESTIMONIALS.testimonials,
   })
 
-  const handleSave = () => {
-    onSave({
-      id: content.id,
-      ...formData,
-    })
+  const [isSaving, setIsSaving] = useState(false)
+
+  const handleSave = async () => {
+    setIsSaving(true)
+    try {
+      await onSave({
+        id: content.id,
+        ...formData,
+      })
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const handleRevert = () => {
@@ -144,23 +151,24 @@ export function TestimonialsEditor({ content, onSave }: TestimonialsEditorProps)
         fieldLabel={aiEditor.label}
         onApply={handleAIApply}
       />
-      <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 animate-slide-down">
         <div>
-          <h2 className="text-2xl font-bold text-white">Testimonials Section</h2>
-          <p className="text-zinc-400 text-sm mt-1">Edit the testimonials section content</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-white">Testimonials Section</h2>
+          <p className="text-zinc-400 text-xs sm:text-sm mt-1">Edit the testimonials section content</p>
         </div>
         <Button
           variant="outline"
-          className="border-zinc-700 text-white hover:bg-zinc-800"
+          size="sm"
+          className="border-zinc-700 text-white hover:bg-zinc-800 transition-smooth btn-press hover:scale-105 active:scale-95 w-full sm:w-auto"
           onClick={handleRevert}
         >
-          <RotateCcw className="w-4 h-4 mr-2" />
+          <RotateCcw className="w-4 h-4 mr-2 transition-transform hover:rotate-180" />
           Revert to Default
         </Button>
       </div>
 
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-6">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 sm:p-6 space-y-6 card-hover animate-scale-in">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="badge" className="text-white">
@@ -231,35 +239,12 @@ export function TestimonialsEditor({ content, onSave }: TestimonialsEditorProps)
         </div>
 
         <div className="space-y-4 pt-4 border-t border-zinc-800">
-          <div className="flex items-center justify-between">
-            <Label className="text-white">Testimonials</Label>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={addTestimonial}
-              className="border-zinc-700 text-white hover:bg-zinc-800"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Testimonial
-            </Button>
-          </div>
+          <Label className="text-white">Testimonials</Label>
 
           {formData.testimonials.map((testimonial, index) => (
-            <div key={testimonial.id || index} className="space-y-3 p-4 bg-zinc-950 rounded-lg">
+            <div key={testimonial.id || index} className="space-y-3 p-4 bg-zinc-950 rounded-lg card-hover animate-slide-up stagger-children">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-zinc-400">Testimonial {index + 1}</span>
-                {formData.testimonials.length > 1 && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeTestimonial(index)}
-                    className="text-red-400 hover:text-red-300"
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                )}
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -283,7 +268,7 @@ export function TestimonialsEditor({ content, onSave }: TestimonialsEditorProps)
                     newTestimonials[index].name = e.target.value
                     setFormData({ ...formData, testimonials: newTestimonials })
                   }}
-                  className="bg-zinc-900 border-zinc-800 text-white"
+                  className="bg-zinc-900 border-zinc-800 text-white input-focus transition-smooth"
                 />
               </div>
               <div className="space-y-2">
@@ -308,7 +293,7 @@ export function TestimonialsEditor({ content, onSave }: TestimonialsEditorProps)
                     newTestimonials[index].result = e.target.value
                     setFormData({ ...formData, testimonials: newTestimonials })
                   }}
-                  className="bg-zinc-900 border-zinc-800 text-white"
+                  className="bg-zinc-900 border-zinc-800 text-white input-focus transition-smooth"
                 />
               </div>
               <div className="space-y-2">
@@ -333,7 +318,7 @@ export function TestimonialsEditor({ content, onSave }: TestimonialsEditorProps)
                     newTestimonials[index].quote = e.target.value
                     setFormData({ ...formData, testimonials: newTestimonials })
                   }}
-                  className="bg-zinc-900 border-zinc-800 text-white min-h-24"
+                  className="bg-zinc-900 border-zinc-800 text-white min-h-24 input-focus transition-smooth"
                 />
               </div>
               <Input
@@ -355,10 +340,11 @@ export function TestimonialsEditor({ content, onSave }: TestimonialsEditorProps)
 
         <Button
           onClick={handleSave}
-          className="w-full bg-primary hover:bg-primary/90 text-white"
+          disabled={isSaving}
+          className="w-full bg-primary hover:bg-primary/90 text-white transition-smooth btn-press hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
-          <Save className="w-4 h-4 mr-2" />
-          Save Changes
+          <Save className={`w-4 h-4 mr-2 transition-transform ${isSaving ? 'animate-spin' : ''}`} />
+          {isSaving ? "Saving..." : "Save Changes"}
         </Button>
       </div>
       </div>

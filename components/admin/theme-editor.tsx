@@ -27,11 +27,18 @@ export function ThemeEditor({ content, onSave }: ThemeEditorProps) {
     headingFont: content.headingFont || DEFAULT_THEME.headingFont,
   })
 
-  const handleSave = () => {
-    onSave({
-      id: content.id,
-      ...formData,
-    })
+  const [isSaving, setIsSaving] = useState(false)
+
+  const handleSave = async () => {
+    setIsSaving(true)
+    try {
+      await onSave({
+        id: content.id,
+        ...formData,
+      })
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const handleRevert = () => {
@@ -46,41 +53,42 @@ export function ThemeEditor({ content, onSave }: ThemeEditorProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 animate-fade-in">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 animate-slide-down">
         <div>
-          <h2 className="text-2xl font-bold text-white">Theme Settings</h2>
-          <p className="text-zinc-400 text-sm mt-1">Customize global styles, colors, and fonts</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-white">Theme Settings</h2>
+          <p className="text-zinc-400 text-xs sm:text-sm mt-1">Customize global styles, colors, and fonts</p>
         </div>
         <Button
           variant="outline"
-          className="border-zinc-700 text-white hover:bg-zinc-800"
+          size="sm"
+          className="border-zinc-700 text-white hover:bg-zinc-800 transition-smooth btn-press hover:scale-105 active:scale-95 w-full sm:w-auto"
           onClick={handleRevert}
         >
-          <RotateCcw className="w-4 h-4 mr-2" />
+          <RotateCcw className="w-4 h-4 mr-2 transition-transform hover:rotate-180" />
           Revert to Default
         </Button>
       </div>
 
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-6">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 sm:p-6 space-y-6 card-hover animate-scale-in">
         <div className="space-y-2">
           <Label htmlFor="primaryColor" className="text-white">
             Primary Color
           </Label>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Input
               id="primaryColor"
               type="text"
               value={formData.primaryColor}
               onChange={(e) => setFormData({ ...formData, primaryColor: e.target.value })}
               placeholder="#3b82f6"
-              className="bg-zinc-950 border-zinc-800 text-white"
+              className="bg-zinc-950 border-zinc-800 text-white flex-1"
             />
             <input
               type="color"
               value={formData.primaryColor}
               onChange={(e) => setFormData({ ...formData, primaryColor: e.target.value })}
-              className="w-16 h-10 rounded cursor-pointer"
+              className="w-12 h-10 sm:w-16 sm:h-10 rounded cursor-pointer flex-shrink-0"
             />
           </div>
           <p className="text-xs text-zinc-500">
@@ -92,20 +100,20 @@ export function ThemeEditor({ content, onSave }: ThemeEditorProps) {
           <Label htmlFor="secondaryColor" className="text-white">
             Secondary Color
           </Label>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Input
               id="secondaryColor"
               type="text"
               value={formData.secondaryColor}
               onChange={(e) => setFormData({ ...formData, secondaryColor: e.target.value })}
               placeholder="#8b5cf6"
-              className="bg-zinc-950 border-zinc-800 text-white"
+              className="bg-zinc-950 border-zinc-800 text-white flex-1"
             />
             <input
               type="color"
               value={formData.secondaryColor}
               onChange={(e) => setFormData({ ...formData, secondaryColor: e.target.value })}
-              className="w-16 h-10 rounded cursor-pointer"
+              className="w-12 h-10 sm:w-16 sm:h-10 rounded cursor-pointer flex-shrink-0"
             />
           </div>
           <p className="text-xs text-zinc-500">
@@ -147,7 +155,7 @@ export function ThemeEditor({ content, onSave }: ThemeEditorProps) {
           </p>
         </div>
 
-        <div className="p-4 bg-zinc-950 rounded-lg border border-zinc-800">
+        <div className="p-4 bg-zinc-950 rounded-lg border border-zinc-800 card-hover animate-slide-up">
           <h3 className="text-white font-semibold mb-2">Preview</h3>
           <div className="space-y-3">
             <div
@@ -201,10 +209,11 @@ export function ThemeEditor({ content, onSave }: ThemeEditorProps) {
 
         <Button
           onClick={handleSave}
-          className="w-full bg-primary hover:bg-primary/90 text-white"
+          disabled={isSaving}
+          className="w-full bg-primary hover:bg-primary/90 text-white transition-smooth btn-press hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
-          <Save className="w-4 h-4 mr-2" />
-          Save Theme Changes
+          <Save className={`w-4 h-4 mr-2 transition-transform ${isSaving ? 'animate-spin' : ''}`} />
+          {isSaving ? "Saving..." : "Save Theme Changes"}
         </Button>
       </div>
     </div>
